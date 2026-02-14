@@ -1,0 +1,1090 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="robots" content="noindex, nofollow">
+    <title>Jan Lönnqvist · Head of Production, EMEA & APAC · Smartly</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --bg: #7A30D8;
+            --bg-dark: #5A20B0;
+            --surface: rgba(255,255,255,0.1);
+            --border: rgba(255,255,255,0.18);
+            --text: #FFFFFF;
+            --text-dim: rgba(255,255,255,0.75);
+            --text-muted: rgba(255,255,255,0.5);
+            --yellow: #F5EF52;
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        html { scroll-behavior: smooth; }
+
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+            background: var(--bg);
+            color: var(--text);
+            overflow-x: hidden;
+            -webkit-font-smoothing: antialiased;
+        }
+
+        ::selection { background: var(--yellow); color: var(--bg); }
+
+        #canvas-container {
+            position: fixed;
+            top: 0; left: 0;
+            width: 100%; height: 100%;
+            z-index: 0;
+        }
+
+        /* Gradient overlay for depth instead of flat purple */
+        #canvas-container::after {
+            content: '';
+            position: absolute;
+            top: 0; left: 0; right: 0; bottom: 0;
+            background: radial-gradient(ellipse at 30% 20%, rgba(168,85,247,0.15) 0%, transparent 60%),
+                        radial-gradient(ellipse at 80% 80%, rgba(90,32,176,0.2) 0%, transparent 50%);
+            pointer-events: none;
+            z-index: 1;
+        }
+
+        .page { position: relative; z-index: 10; pointer-events: none; }
+        .page a, .page button, .page nav { pointer-events: auto; }
+
+        /* NAV */
+        nav {
+            position: fixed;
+            top: 0; left: 0; right: 0;
+            padding: 0 48px;
+            height: 64px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            z-index: 100;
+            background: rgba(122,48,216,0.8);
+            backdrop-filter: blur(24px);
+            -webkit-backdrop-filter: blur(24px);
+            border-bottom: 1px solid var(--border);
+        }
+
+        .nav-logo { height: 20px; display: flex; align-items: center; }
+        .nav-logo svg { height: 100%; width: auto; }
+
+        .nav-links { display: flex; gap: 28px; }
+        .nav-links a {
+            font-size: 13px;
+            font-weight: 500;
+            color: var(--text-dim);
+            text-decoration: none;
+            letter-spacing: 0.01em;
+            transition: color 0.2s;
+        }
+        .nav-links a:hover { color: var(--yellow); }
+
+        /* HERO */
+        .hero {
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            padding: 0 48px;
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+
+        .hero-content { max-width: 620px; }
+
+        .hero-eyebrow {
+            font-size: 11px;
+            font-weight: 600;
+            letter-spacing: 0.16em;
+            text-transform: uppercase;
+            color: var(--yellow);
+            margin-bottom: 20px;
+            opacity: 0; transform: translateY(16px);
+            animation: up .7s .2s cubic-bezier(.25,.46,.45,.94) forwards;
+        }
+
+        .hero-line {
+            width: 48px;
+            height: 2px;
+            background: var(--yellow);
+            margin-bottom: 28px;
+            opacity: 0; transform: scaleX(0);
+            transform-origin: left;
+            animation: lineIn .6s .3s cubic-bezier(.25,.46,.45,.94) forwards;
+        }
+
+        .hero-title {
+            font-size: clamp(48px, 7vw, 92px);
+            font-weight: 800;
+            line-height: 0.93;
+            letter-spacing: -0.045em;
+            margin-bottom: 28px;
+            opacity: 0; transform: translateY(24px);
+            animation: up .7s .4s cubic-bezier(.25,.46,.45,.94) forwards;
+        }
+
+        .hero-title .accent { color: var(--yellow); }
+
+        .hero-sub {
+            font-size: 17px;
+            font-weight: 400;
+            color: var(--text-dim);
+            line-height: 1.7;
+            max-width: 460px;
+            margin-bottom: 40px;
+            opacity: 0; transform: translateY(16px);
+            animation: up .7s .55s cubic-bezier(.25,.46,.45,.94) forwards;
+        }
+
+        .hero-tags {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+            opacity: 0; transform: translateY(16px);
+            animation: up .7s .7s cubic-bezier(.25,.46,.45,.94) forwards;
+        }
+
+        .hero-tag {
+            font-size: 11px;
+            font-weight: 600;
+            letter-spacing: 0.03em;
+            padding: 7px 14px;
+            border-radius: 100px;
+            border: 1px solid var(--border);
+            color: var(--text-dim);
+            transition: all 0.3s;
+        }
+        .hero-tag:hover { border-color: var(--yellow); color: var(--yellow); }
+
+        /* SECTIONS */
+        .section {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 140px 48px;
+        }
+
+        .section-eyebrow {
+            font-size: 11px;
+            font-weight: 600;
+            letter-spacing: 0.14em;
+            text-transform: uppercase;
+            color: var(--yellow);
+            margin-bottom: 16px;
+        }
+
+        .section-heading {
+            font-size: clamp(32px, 4.5vw, 56px);
+            font-weight: 800;
+            letter-spacing: -0.035em;
+            line-height: 1.08;
+            margin-bottom: 72px;
+        }
+
+        /* EXPERIENCE */
+        .exp-list { list-style: none; }
+
+        .exp-row {
+            display: grid;
+            grid-template-columns: 160px 1fr;
+            gap: 48px;
+            padding: 36px 0;
+            border-top: 1px solid var(--border);
+            transition: opacity 0.3s;
+        }
+        .exp-row:last-child { border-bottom: 1px solid var(--border); }
+        .exp-row:hover { opacity: 0.65; }
+
+        .exp-period {
+            font-size: 13px;
+            font-weight: 500;
+            color: var(--text-muted);
+            padding-top: 3px;
+        }
+
+        .exp-company {
+            font-size: 22px;
+            font-weight: 700;
+            margin-bottom: 2px;
+            letter-spacing: -0.01em;
+        }
+
+        .exp-title {
+            font-size: 15px;
+            color: var(--text-dim);
+            font-weight: 500;
+            margin-bottom: 10px;
+        }
+
+        .exp-blurb {
+            font-size: 14px;
+            color: var(--text-muted);
+            line-height: 1.7;
+            max-width: 500px;
+        }
+
+        /* CAPABILITIES */
+        .cap-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 0;
+        }
+
+        .cap-item {
+            padding: 36px 0;
+            border-bottom: 1px solid var(--border);
+        }
+
+        .cap-item:nth-child(-n+3) { border-top: 1px solid var(--border); }
+
+        .cap-item:nth-child(3n+1),
+        .cap-item:nth-child(3n+2) {
+            border-right: 1px solid var(--border);
+            padding-right: 36px;
+        }
+
+        .cap-item:nth-child(3n+2),
+        .cap-item:nth-child(3n) { padding-left: 36px; }
+
+        .cap-num {
+            font-size: 11px;
+            font-weight: 600;
+            color: var(--yellow);
+            margin-bottom: 12px;
+            letter-spacing: 0.04em;
+        }
+
+        .cap-name {
+            font-size: 16px;
+            font-weight: 600;
+            margin-bottom: 8px;
+        }
+
+        .cap-desc {
+            font-size: 13px;
+            color: var(--text-muted);
+            line-height: 1.65;
+        }
+
+        /* NUMBERS STRIP */
+        .numbers {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 0;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 48px;
+            border-top: 1px solid var(--border);
+            border-bottom: 1px solid var(--border);
+        }
+
+        .number-item {
+            padding: 48px 0;
+            text-align: center;
+            border-right: 1px solid var(--border);
+        }
+        .number-item:last-child { border-right: none; }
+
+        .number-val {
+            font-size: 40px;
+            font-weight: 800;
+            letter-spacing: -0.03em;
+            line-height: 1;
+            color: var(--yellow);
+        }
+
+        .number-label {
+            font-size: 11px;
+            font-weight: 500;
+            color: var(--text-muted);
+            margin-top: 8px;
+            letter-spacing: 0.04em;
+            text-transform: uppercase;
+        }
+
+        /* WHY */
+        .why-section {
+            padding: 160px 48px;
+            max-width: 880px;
+            margin: 0 auto;
+            text-align: center;
+        }
+
+        .why-heading {
+            font-size: clamp(36px, 5vw, 56px);
+            font-weight: 800;
+            letter-spacing: -0.035em;
+            line-height: 1.12;
+            margin-bottom: 32px;
+        }
+
+        .why-body {
+            font-size: 17px;
+            color: var(--text-dim);
+            line-height: 1.8;
+            max-width: 600px;
+            margin: 0 auto;
+        }
+
+        /* CTA */
+        .cta-section {
+            padding: 120px 48px;
+            text-align: center;
+            border-top: 1px solid var(--border);
+        }
+
+        .cta-logo { height: 22px; margin: 0 auto 40px; }
+        .cta-logo svg { height: 100%; width: auto; display: block; margin: 0 auto; }
+
+        .cta-heading {
+            font-size: clamp(32px, 4.5vw, 56px);
+            font-weight: 800;
+            letter-spacing: -0.03em;
+            margin-bottom: 12px;
+        }
+
+        .cta-sub {
+            font-size: 16px;
+            color: var(--text-dim);
+            margin-bottom: 40px;
+        }
+
+        .cta-actions { display: flex; gap: 12px; justify-content: center; flex-wrap: wrap; }
+
+        .btn {
+            display: inline-flex;
+            align-items: center;
+            padding: 14px 32px;
+            font-size: 14px;
+            font-weight: 600;
+            font-family: inherit;
+            text-decoration: none;
+            border-radius: 8px;
+            transition: all 0.25s cubic-bezier(.25,.46,.45,.94);
+            cursor: pointer;
+        }
+
+        .btn-fill {
+            background: var(--yellow);
+            color: var(--bg);
+            border: none;
+        }
+        .btn-fill:hover { transform: scale(1.03); box-shadow: 0 8px 32px rgba(245,239,82,0.3); }
+
+        .btn-outline {
+            background: transparent;
+            color: var(--text);
+            border: 1.5px solid var(--border);
+        }
+        .btn-outline:hover { border-color: var(--yellow); color: var(--yellow); }
+
+        /* FOOTER */
+        footer {
+            padding: 28px 48px;
+            text-align: center;
+            font-size: 13px;
+            color: var(--text-muted);
+            border-top: 1px solid var(--border);
+        }
+
+        /* PARALLAX TEXT */
+        .parallax-wrap {
+            will-change: transform;
+        }
+
+        /* ANIMATIONS */
+        @keyframes up { to { opacity: 1; transform: translateY(0); } }
+        @keyframes lineIn { to { opacity: 1; transform: scaleX(1); } }
+
+        .reveal {
+            opacity: 0;
+            transform: translateY(40px);
+            transition: opacity .7s cubic-bezier(.25,.46,.45,.94),
+                        transform .7s cubic-bezier(.25,.46,.45,.94);
+        }
+        .reveal.vis { opacity: 1; transform: none; }
+
+        /* RESPONSIVE */
+        @media (max-width: 1024px) {
+            .cap-grid { grid-template-columns: repeat(2, 1fr); }
+            .cap-item:nth-child(3n+1),
+            .cap-item:nth-child(3n+2) { border-right: none; padding-right: 0; }
+            .cap-item:nth-child(2n+1) { border-right: 1px solid var(--border); padding-right: 36px; }
+            .cap-item:nth-child(2n) { padding-left: 36px; }
+            .cap-item:nth-child(-n+3) { border-top: none; }
+            .cap-item:nth-child(-n+2) { border-top: 1px solid var(--border); }
+        }
+
+        @media (max-width: 768px) {
+            nav { padding: 0 20px; }
+            .nav-links { display: none; }
+            .hero { padding: 0 20px; }
+            .section { padding: 100px 20px; }
+            .why-section { padding: 120px 20px; }
+            .cta-section { padding: 80px 20px; }
+            .exp-row { grid-template-columns: 1fr; gap: 6px; padding: 24px 0; }
+            .cap-grid { grid-template-columns: 1fr; }
+            .cap-item { padding: 24px 0 !important; border-right: none !important; }
+            .cap-item:nth-child(-n+3) { border-top: none; }
+            .cap-item:first-child { border-top: 1px solid var(--border); }
+            .numbers { grid-template-columns: repeat(2, 1fr); }
+            .number-item:nth-child(2) { border-right: none; }
+            .number-item:nth-child(-n+2) { border-bottom: 1px solid var(--border); }
+            .cta-actions { flex-direction: column; align-items: center; }
+            footer { padding: 20px; }
+        }
+    </style>
+</head>
+<body>
+
+<div id="canvas-container"></div>
+
+<div class="page">
+
+    <nav>
+        <div class="nav-logo">
+            <svg width="137" height="22" viewBox="0 0 137 22" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <path d="M0.5 15.752V10.9856H12.7803V0.9375L38.4222 6.27072V10.9856H26.0389V21.0595L0.5 15.752Z" fill="white"/>
+                <path d="M58.1652 9.0063H55.4852C55.0911 6.24872 52.3417 6.83456 51.5703 7.12372C51.0552 7.31678 50.5147 8.12013 50.8346 8.79418C51.124 9.40403 51.805 9.75299 53.9087 9.8813C57.7343 10.1146 58.6207 12.1351 58.5856 13.1162C58.5856 14.548 58.2966 17.0847 53.3044 17.3321C48.596 17.5654 47.6466 14.495 47.7605 12.9306H50.4668C50.4457 14.8821 52.017 15.1313 53.0942 15.1313C54.3029 15.1313 55.4852 14.8662 55.4852 13.6199C55.4852 12.623 54.8021 12.1616 53.9087 12.1086C51.8944 12.1439 47.8446 11.573 47.7605 9.0063C47.6554 5.79796 50.0726 4.41917 54.3029 4.68432C57.687 4.89644 58.2879 7.65403 58.1652 9.0063Z" fill="white"/>
+                <path d="M129.051 17.3447H131.993V12.3829L136.598 4.65234H133.272L130.765 9.61413L129.051 6.29714C128.846 5.74887 128.125 4.65234 126.877 4.65234H124.37L129.051 12.3829V17.3447Z" fill="white"/>
+                <path d="M116.785 17.3447V4.65234H118.402C119.525 4.65234 119.806 5.61886 119.806 6.10211V14.7734C120.478 14.7643 122.192 14.7515 123.676 14.7734C125.16 14.7953 125.478 15.4025 125.451 15.7034V17.3447H116.785Z" fill="white"/>
+                <path d="M108.185 17.3447H111.12V7.08747H114.464V5.74719C114.464 5.09046 114.004 4.63121 112.371 4.65309C110.737 4.67498 106.688 4.66221 104.867 4.65309V7.08747H108.185V17.3447Z" fill="white"/>
+                <path fill-rule="evenodd" clip-rule="evenodd" d="M92.4841 17.3447H95.3958V12.6227H98.3834C98.8307 12.5495 99.7253 12.738 99.7253 14.0777V17.3447H102.536V13.5836C102.536 12.9613 102.232 11.6673 101.017 11.4697C101.574 11.2134 102.657 10.2507 102.536 8.44981C102.384 6.19865 100.611 4.77108 98.1049 4.68872C96.0997 4.62284 93.5222 4.66127 92.4841 4.68872V17.3447ZM95.4211 10.7284V7.15951H98.2568C98.8138 7.18696 99.9279 7.57131 99.9279 8.88906C99.9279 10.2068 98.8138 10.6644 98.2568 10.7284H95.4211Z" fill="white"/>
+                <path fill-rule="evenodd" clip-rule="evenodd" d="M80.2153 17.3447H77.1606L81.834 4.67678C82.0342 4.65834 82.7635 4.63252 84.0793 4.67678C85.3952 4.72103 86.0026 5.70939 86.1419 6.19803L90.1625 17.3447H86.7685C86.5596 15.1983 85.5327 14.717 85.0453 14.7447H81.0769L80.2153 17.3447ZM85.2542 12.6703H81.7818L83.4527 7.27675L85.2542 12.6703Z" fill="white"/>
+                <path d="M61.3728 4.65234V17.3447H64.047V7.57294L67.1366 17.3447H69.7069L72.7705 7.76401V17.3447H75.7563C75.7649 14.0692 75.777 7.2454 75.7563 6.15359C75.7355 5.06177 74.9687 4.69784 74.5879 4.65234H71.1608L68.5905 13.0593C68.0799 11.5308 66.9704 8.09155 66.6173 6.56302C66.2642 5.03448 65.3971 4.65234 65.0076 4.65234H61.3728Z" fill="white"/>
+            </svg>
+        </div>
+        <div class="nav-links">
+            <a href="#experience">Experience</a>
+            <a href="#skills">Capabilities</a>
+            <a href="#contact">Contact</a>
+        </div>
+    </nav>
+
+    <!-- HERO -->
+    <section class="hero">
+        <div class="hero-content">
+            <div class="hero-eyebrow">Head of Production, EMEA & APAC · Amsterdam</div>
+            <div class="hero-line"></div>
+            <h1 class="hero-title">Jan<br>Lönnqvist</h1>
+            <p class="hero-sub">10+ years scaling creative production from Helsinki agencies to EMEA-wide brand systems. AI-integrated workflows, multi-market delivery, and team leadership across 40+ countries.</p>
+            <div class="hero-tags">
+                <span class="hero-tag">Production Leadership</span>
+                <span class="hero-tag">Multi-Market Scale</span>
+                <span class="hero-tag">AI & Automation</span>
+                <span class="hero-tag">Team Management</span>
+                <span class="hero-tag">Fluent Finnish</span>
+            </div>
+        </div>
+    </section>
+
+    <!-- NUMBERS -->
+    <div class="numbers reveal">
+        <div class="number-item">
+            <div class="number-val">10+</div>
+            <div class="number-label">Years Production</div>
+        </div>
+        <div class="number-item">
+            <div class="number-val">40+</div>
+            <div class="number-label">Countries Covered</div>
+        </div>
+        <div class="number-item">
+            <div class="number-val">12+</div>
+            <div class="number-label">Markets, One Campaign</div>
+        </div>
+        <div class="number-item">
+            <div class="number-val">6</div>
+            <div class="number-label">Major EMEA Brands</div>
+        </div>
+    </div>
+
+    <!-- EXPERIENCE -->
+    <section class="section" id="experience">
+        <div class="parallax-wrap">
+            <div class="section-eyebrow reveal">Experience</div>
+            <h2 class="section-heading reveal">Production &<br>Creative Delivery</h2>
+        </div>
+        <ul class="exp-list">
+            <li class="exp-row reveal">
+                <div class="exp-period">2024 — Present</div>
+                <div>
+                    <div class="exp-company">GLS Group</div>
+                    <div class="exp-title">Group Graphic Designer</div>
+                    <div class="exp-blurb">EMEA-wide design across 40+ countries. Campaign design, print, video, expo, and brand systems at continental scale. Pioneering AI-integrated workflows and training the team on AI tools for production efficiency.</div>
+                </div>
+            </li>
+            <li class="exp-row reveal">
+                <div class="exp-period">2024</div>
+                <div>
+                    <div class="exp-company">Freelance (DHL)</div>
+                    <div class="exp-title">Senior Graphic Designer</div>
+                    <div class="exp-blurb">Agency-side production for DHL campaigns spanning 12+ markets and 26 locations. Launch campaign achieved 20% of targeted leads in month one.</div>
+                </div>
+            </li>
+            <li class="exp-row reveal">
+                <div class="exp-period">2022 — 2024</div>
+                <div>
+                    <div class="exp-company">Rituals</div>
+                    <div class="exp-title">Visual Specialist</div>
+                    <div class="exp-blurb">In-store campaign design, packaging, and point-of-sale visuals. Key projects include Hammam and Legend of the Dragon seasonal campaigns across retail locations.</div>
+                </div>
+            </li>
+            <li class="exp-row reveal">
+                <div class="exp-period">2022</div>
+                <div>
+                    <div class="exp-company">HelloFresh</div>
+                    <div class="exp-title">Creative / DTP</div>
+                    <div class="exp-blurb">Led a team of three managing recipe card design and print production across Benelux and France. Team leading, project management, and cross-market delivery.</div>
+                </div>
+            </li>
+            <li class="exp-row reveal">
+                <div class="exp-period">2019 — 2020</div>
+                <div>
+                    <div class="exp-company">IKEA Group</div>
+                    <div class="exp-title">Graphic Artist</div>
+                    <div class="exp-blurb">DTP and graphic design for campaigns and in-store materials. Led and photographed the Luonnollisesti arvokasta (Naturally Valuable) sustainability initiative, translating global brand guidelines into locally impactful action.</div>
+                </div>
+            </li>
+            <li class="exp-row reveal">
+                <div class="exp-period">2019</div>
+                <div>
+                    <div class="exp-company">Valve</div>
+                    <div class="exp-title">Art Director</div>
+                    <div class="exp-blurb">Art direction for production at Helsinki agency. DTP, graphic design, and creative direction for client campaigns.</div>
+                </div>
+            </li>
+            <li class="exp-row reveal">
+                <div class="exp-period">2013 — 2019</div>
+                <div>
+                    <div class="exp-company">Helsinki Agencies</div>
+                    <div class="exp-title">Graphic Designer / DTP</div>
+                    <div class="exp-blurb">Five years across Planex, Pixmill, Cocomms, Lönnberg, and Multiprint. Brand identities, campaigns, and corporate communications. Deep expertise in prepress, offset printing, color management, and production pipelines.</div>
+                </div>
+            </li>
+        </ul>
+    </section>
+
+    <!-- CAPABILITIES -->
+    <section class="section" id="skills">
+        <div class="parallax-wrap">
+            <div class="section-eyebrow reveal">Capabilities</div>
+            <h2 class="section-heading reveal">What I Deliver</h2>
+        </div>
+        <div class="cap-grid">
+            <div class="cap-item reveal">
+                <div class="cap-num">01</div>
+                <div class="cap-name">Production Leadership & Ops</div>
+                <div class="cap-desc">End-to-end creative production across campaigns, packaging, retail, and digital. Managing timelines, quality, and delivery at volume — the operational backbone SparkWorks Creative needs at regional scale.</div>
+            </div>
+            <div class="cap-item reveal">
+                <div class="cap-num">02</div>
+                <div class="cap-name">Multi-Market Scale</div>
+                <div class="cap-desc">40+ countries at GLS Group, 12+ markets and 26 locations for DHL, Benelux & France at HelloFresh. Localization workflows, regional adaptations, and brand consistency across continents.</div>
+            </div>
+            <div class="cap-item reveal">
+                <div class="cap-num">03</div>
+                <div class="cap-name">AI-Integrated Workflows</div>
+                <div class="cap-desc">Pioneering AI tool integration into daily production at GLS Group. Training teams on AI-assisted design, automation, and efficiency — bringing next-generation production thinking to creative ops.</div>
+            </div>
+            <div class="cap-item reveal">
+                <div class="cap-num">04</div>
+                <div class="cap-name">Team & Stakeholder Management</div>
+                <div class="cap-desc">Direct team leadership at HelloFresh. Cross-functional collaboration with design, marketing, sales, and external stakeholders. Clear communication in English and Finnish.</div>
+            </div>
+            <div class="cap-item reveal">
+                <div class="cap-num">05</div>
+                <div class="cap-name">Art Direction & DTP</div>
+                <div class="cap-desc">Art direction at Valve. Expert-level DTP across print, packaging, in-store, expo, and digital. Prepress, offset, After Effects, Premiere Pro — production-ready delivery every time.</div>
+            </div>
+            <div class="cap-item reveal">
+                <div class="cap-num">06</div>
+                <div class="cap-name">Brand Systems & Process</div>
+                <div class="cap-desc">Building scalable design systems, template libraries, and production pipelines. Figma, full Adobe Creative Suite. Color management, prepress expertise, and quality control refined over a decade.</div>
+            </div>
+        </div>
+    </section>
+
+    <!-- WHY SMARTLY -->
+    <section class="why-section">
+        <div class="parallax-wrap">
+            <div class="section-eyebrow reveal">Why Smartly</div>
+            <h2 class="why-heading reveal">Production at<br>Platform Scale</h2>
+            <p class="why-body reveal">SparkWorks Creative needs a production leader who can make EMEA and APAC delivery predictable, scalable, and excellent. I've spent a decade building exactly this — from managing production across 40+ countries at GLS Group, to leading multi-market teams at HelloFresh, to pioneering AI-integrated workflows that multiply creative output. I bring deep production pipeline knowledge from years in prepress and print, combined with modern tools and AI automation. As a fluent Finnish speaker based in Amsterdam, I can bridge Smartly's Helsinki roots with its EMEA operations seamlessly.</p>
+        </div>
+    </section>
+
+    <!-- CTA -->
+    <section class="cta-section" id="contact">
+        <div class="cta-logo reveal">
+            <svg width="137" height="22" viewBox="0 0 137 22" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <path d="M0.5 15.752V10.9856H12.7803V0.9375L38.4222 6.27072V10.9856H26.0389V21.0595L0.5 15.752Z" fill="white"/>
+                <path d="M58.1652 9.0063H55.4852C55.0911 6.24872 52.3417 6.83456 51.5703 7.12372C51.0552 7.31678 50.5147 8.12013 50.8346 8.79418C51.124 9.40403 51.805 9.75299 53.9087 9.8813C57.7343 10.1146 58.6207 12.1351 58.5856 13.1162C58.5856 14.548 58.2966 17.0847 53.3044 17.3321C48.596 17.5654 47.6466 14.495 47.7605 12.9306H50.4668C50.4457 14.8821 52.017 15.1313 53.0942 15.1313C54.3029 15.1313 55.4852 14.8662 55.4852 13.6199C55.4852 12.623 54.8021 12.1616 53.9087 12.1086C51.8944 12.1439 47.8446 11.573 47.7605 9.0063C47.6554 5.79796 50.0726 4.41917 54.3029 4.68432C57.687 4.89644 58.2879 7.65403 58.1652 9.0063Z" fill="white"/>
+                <path d="M129.051 17.3447H131.993V12.3829L136.598 4.65234H133.272L130.765 9.61413L129.051 6.29714C128.846 5.74887 128.125 4.65234 126.877 4.65234H124.37L129.051 12.3829V17.3447Z" fill="white"/>
+                <path d="M116.785 17.3447V4.65234H118.402C119.525 4.65234 119.806 5.61886 119.806 6.10211V14.7734C120.478 14.7643 122.192 14.7515 123.676 14.7734C125.16 14.7953 125.478 15.4025 125.451 15.7034V17.3447H116.785Z" fill="white"/>
+                <path d="M108.185 17.3447H111.12V7.08747H114.464V5.74719C114.464 5.09046 114.004 4.63121 112.371 4.65309C110.737 4.67498 106.688 4.66221 104.867 4.65309V7.08747H108.185V17.3447Z" fill="white"/>
+                <path fill-rule="evenodd" clip-rule="evenodd" d="M92.4841 17.3447H95.3958V12.6227H98.3834C98.8307 12.5495 99.7253 12.738 99.7253 14.0777V17.3447H102.536V13.5836C102.536 12.9613 102.232 11.6673 101.017 11.4697C101.574 11.2134 102.657 10.2507 102.536 8.44981C102.384 6.19865 100.611 4.77108 98.1049 4.68872C96.0997 4.62284 93.5222 4.66127 92.4841 4.68872V17.3447ZM95.4211 10.7284V7.15951H98.2568C98.8138 7.18696 99.9279 7.57131 99.9279 8.88906C99.9279 10.2068 98.8138 10.6644 98.2568 10.7284H95.4211Z" fill="white"/>
+                <path fill-rule="evenodd" clip-rule="evenodd" d="M80.2153 17.3447H77.1606L81.834 4.67678C82.0342 4.65834 82.7635 4.63252 84.0793 4.67678C85.3952 4.72103 86.0026 5.70939 86.1419 6.19803L90.1625 17.3447H86.7685C86.5596 15.1983 85.5327 14.717 85.0453 14.7447H81.0769L80.2153 17.3447ZM85.2542 12.6703H81.7818L83.4527 7.27675L85.2542 12.6703Z" fill="white"/>
+                <path d="M61.3728 4.65234V17.3447H64.047V7.57294L67.1366 17.3447H69.7069L72.7705 7.76401V17.3447H75.7563C75.7649 14.0692 75.777 7.2454 75.7563 6.15359C75.7355 5.06177 74.9687 4.69784 74.5879 4.65234H71.1608L68.5905 13.0593C68.0799 11.5308 66.9704 8.09155 66.6173 6.56302C66.2642 5.03448 65.3971 4.65234 65.0076 4.65234H61.3728Z" fill="white"/>
+            </svg>
+        </div>
+        <h2 class="cta-heading reveal">Let's Scale Together</h2>
+        <p class="cta-sub reveal">Ready to lead SparkWorks Creative production across EMEA & APAC.</p>
+        <div class="cta-actions reveal">
+            <a href="https://definitelynotjan.github.io/Portfolio/" target="_blank" class="btn btn-fill">View Portfolio</a>
+            <a href="mailto:jan.lonnqvist@windowslive.com" class="btn btn-outline">Get in Touch</a>
+        </div>
+    </section>
+
+    <footer>Amsterdam, Netherlands</footer>
+
+</div>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/loaders/SVGLoader.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/postprocessing/EffectComposer.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/postprocessing/RenderPass.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/postprocessing/ShaderPass.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/postprocessing/UnrealBloomPass.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/shaders/CopyShader.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/shaders/LuminosityHighPassShader.js"></script>
+<script>
+(function() {
+    var container = document.getElementById('canvas-container');
+    var scene = new THREE.Scene();
+    var t0 = performance.now();
+
+    scene.fog = new THREE.FogExp2(0x7A30D8, 0.008);
+
+    var camera = new THREE.PerspectiveCamera(50, innerWidth / innerHeight, 0.1, 600);
+    camera.position.set(0, 0, 30);
+
+    var renderer = new THREE.WebGLRenderer({ antialias: true, alpha: false });
+    renderer.setSize(innerWidth, innerHeight);
+    renderer.setPixelRatio(Math.min(devicePixelRatio, 2));
+    renderer.setClearColor(0x7A30D8);
+    renderer.toneMapping = THREE.ACESFilmicToneMapping;
+    renderer.toneMappingExposure = 1.0;
+    renderer.shadowMap.enabled = true;
+    renderer.shadowMap.type = THREE.PCFSoftShadowMap;
+    container.appendChild(renderer.domElement);
+
+    // Bloom post-processing
+    var composer = new THREE.EffectComposer(renderer);
+    var renderPass = new THREE.RenderPass(scene, camera);
+    composer.addPass(renderPass);
+    var bloomPass = new THREE.UnrealBloomPass(
+        new THREE.Vector2(innerWidth, innerHeight),
+        0.8,   // strength
+        0.4,   // radius
+        0.85   // threshold
+    );
+    composer.addPass(bloomPass);
+
+    function lerp(a, b, t) { return a + (b - a) * t; }
+    function clamp(v, lo, hi) { return Math.max(lo, Math.min(hi, v)); }
+
+    var scrollPx = 0, scrollN = 0, mx = 0, my = 0, tmx = 0, tmy = 0;
+    addEventListener('scroll', function() {
+        scrollPx = scrollY;
+        var max = document.body.scrollHeight - innerHeight;
+        scrollN = max > 0 ? scrollPx / max : 0;
+    });
+    document.addEventListener('mousemove', function(e) {
+        tmx = (e.clientX / innerWidth) * 2 - 1;
+        tmy = -(e.clientY / innerHeight) * 2 + 1;
+    });
+
+    // ── TECH GRID BACKGROUND ──
+    var gridGroup = new THREE.Group();
+    var gridLineMat = new THREE.LineBasicMaterial({
+        color: 0xBB77FF, transparent: true, opacity: 0.1
+    });
+    var gridYellowMat = new THREE.LineBasicMaterial({
+        color: 0xF5EF52, transparent: true, opacity: 0.06
+    });
+    var gridSize = 80;
+    var gridDiv = 16;
+    var gridStep = gridSize / gridDiv;
+
+    // Horizontal lines
+    for (var gi = 0; gi <= gridDiv; gi++) {
+        var gy = -gridSize / 2 + gi * gridStep;
+        var gPoints = [new THREE.Vector3(-gridSize / 2, gy, 0), new THREE.Vector3(gridSize / 2, gy, 0)];
+        var gLineGeo = new THREE.BufferGeometry().setFromPoints(gPoints);
+        gridGroup.add(new THREE.Line(gLineGeo, gi % 4 === 0 ? gridYellowMat : gridLineMat));
+    }
+    // Vertical lines
+    for (var gj = 0; gj <= gridDiv; gj++) {
+        var gx = -gridSize / 2 + gj * gridStep;
+        var gPoints2 = [new THREE.Vector3(gx, -gridSize / 2, 0), new THREE.Vector3(gx, gridSize / 2, 0)];
+        var gLineGeo2 = new THREE.BufferGeometry().setFromPoints(gPoints2);
+        gridGroup.add(new THREE.Line(gLineGeo2, gj % 4 === 0 ? gridYellowMat : gridLineMat));
+    }
+
+    // Glowing node dots at intersections
+    var nodeGeo = new THREE.BufferGeometry();
+    var nodePositions = [];
+    var nodeColors = [];
+    for (var ni = 0; ni <= gridDiv; ni += 2) {
+        for (var nj = 0; nj <= gridDiv; nj += 2) {
+            var nx = -gridSize / 2 + nj * gridStep;
+            var ny = -gridSize / 2 + ni * gridStep;
+            nodePositions.push(nx, ny, 0.05);
+            // Every 4th node is yellow accent, rest are light purple
+            if (ni % 4 === 0 && nj % 4 === 0) {
+                nodeColors.push(0.96, 0.94, 0.32);
+            } else {
+                nodeColors.push(0.73, 0.47, 1.0);
+            }
+        }
+    }
+    nodeGeo.setAttribute('position', new THREE.Float32BufferAttribute(nodePositions, 3));
+    nodeGeo.setAttribute('color', new THREE.Float32BufferAttribute(nodeColors, 3));
+
+    var nodeCanvas = document.createElement('canvas');
+    nodeCanvas.width = 32; nodeCanvas.height = 32;
+    var nodeCtx = nodeCanvas.getContext('2d');
+    var nodeGrad = nodeCtx.createRadialGradient(16, 16, 0, 16, 16, 16);
+    nodeGrad.addColorStop(0, 'rgba(255,255,255,1)');
+    nodeGrad.addColorStop(0.4, 'rgba(255,255,255,0.5)');
+    nodeGrad.addColorStop(1, 'rgba(255,255,255,0)');
+    nodeCtx.fillStyle = nodeGrad;
+    nodeCtx.fillRect(0, 0, 32, 32);
+    var nodeTex = new THREE.CanvasTexture(nodeCanvas);
+
+    var nodeMat = new THREE.PointsMaterial({
+        size: 0.6, map: nodeTex, vertexColors: true,
+        transparent: true, opacity: 0.5,
+        blending: THREE.AdditiveBlending, depthWrite: false, sizeAttenuation: true
+    });
+    var nodes = new THREE.Points(nodeGeo, nodeMat);
+    gridGroup.add(nodes);
+
+    gridGroup.rotation.x = -Math.PI * 0.38;
+    gridGroup.position.set(0, -6, -20);
+    scene.add(gridGroup);
+
+    // Second grid layer — tilted differently, deeper
+    var gridGroup2 = gridGroup.clone();
+    gridGroup2.rotation.x = -Math.PI * 0.25;
+    gridGroup2.rotation.z = Math.PI * 0.12;
+    gridGroup2.position.set(5, 8, -35);
+    gridGroup2.children.forEach(function(c) {
+        if (c.material) {
+            c.material = c.material.clone();
+            c.material.opacity *= 0.4;
+        }
+    });
+    scene.add(gridGroup2);
+
+    // Flowing data lines — curved tubes suggesting data flow
+    var flowMat = new THREE.MeshStandardMaterial({
+        color: 0xF5EF52, emissive: 0xF5EF52, emissiveIntensity: 0.4,
+        transparent: true, opacity: 0.12
+    });
+    var flowMat2 = new THREE.MeshStandardMaterial({
+        color: 0xA855F7, emissive: 0xA855F7, emissiveIntensity: 0.3,
+        transparent: true, opacity: 0.08
+    });
+    var flowData = [
+        { pts: [[-35,10,-15],[-15,6,-10],[10,-3,-12],[35,-8,-18]], mat: flowMat },
+        { pts: [[-30,-12,-20],[-5,-6,-14],[18,4,-16],[40,10,-22]], mat: flowMat2 },
+        { pts: [[30,15,-18],[8,8,-12],[-12,-2,-14],[-35,-10,-20]], mat: flowMat }
+    ];
+    flowData.forEach(function(fd) {
+        var fPts = fd.pts.map(function(p) { return new THREE.Vector3(p[0], p[1], p[2]); });
+        var fCurve = new THREE.CatmullRomCurve3(fPts);
+        var fGeo = new THREE.TubeGeometry(fCurve, 64, 0.05, 6, false);
+        scene.add(new THREE.Mesh(fGeo, fd.mat));
+    });
+
+    // ── 3D SMARTLY LOGO (WHITE) ──
+    var logoGroup = new THREE.Group();
+    var logoSc = 1;
+    var logoCx = 0, logoCy = 0;
+
+    var logoSvg = '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 137 22">' +
+        '<path d="M0.5 15.752V10.9856H12.7803V0.9375L38.4222 6.27072V10.9856H26.0389V21.0595L0.5 15.752Z" fill="black"/>' +
+        '<path d="M58.1652 9.0063H55.4852C55.0911 6.24872 52.3417 6.83456 51.5703 7.12372C51.0552 7.31678 50.5147 8.12013 50.8346 8.79418C51.124 9.40403 51.805 9.75299 53.9087 9.8813C57.7343 10.1146 58.6207 12.1351 58.5856 13.1162C58.5856 14.548 58.2966 17.0847 53.3044 17.3321C48.596 17.5654 47.6466 14.495 47.7605 12.9306H50.4668C50.4457 14.8821 52.017 15.1313 53.0942 15.1313C54.3029 15.1313 55.4852 14.8662 55.4852 13.6199C55.4852 12.623 54.8021 12.1616 53.9087 12.1086C51.8944 12.1439 47.8446 11.573 47.7605 9.0063C47.6554 5.79796 50.0726 4.41917 54.3029 4.68432C57.687 4.89644 58.2879 7.65403 58.1652 9.0063Z" fill="black"/>' +
+        '<path d="M61.3728 4.65234V17.3447H64.047V7.57294L67.1366 17.3447H69.7069L72.7705 7.76401V17.3447H75.7563C75.7649 14.0692 75.777 7.2454 75.7563 6.15359C75.7355 5.06177 74.9687 4.69784 74.5879 4.65234H71.1608L68.5905 13.0593C68.0799 11.5308 66.9704 8.09155 66.6173 6.56302C66.2642 5.03448 65.3971 4.65234 65.0076 4.65234H61.3728Z" fill="black"/>' +
+        '<path fill-rule="evenodd" d="M80.2153 17.3447H77.1606L81.834 4.67678C82.0342 4.65834 82.7635 4.63252 84.0793 4.67678C85.3952 4.72103 86.0026 5.70939 86.1419 6.19803L90.1625 17.3447H86.7685C86.5596 15.1983 85.5327 14.717 85.0453 14.7447H81.0769L80.2153 17.3447ZM85.2542 12.6703H81.7818L83.4527 7.27675L85.2542 12.6703Z" fill="black"/>' +
+        '<path fill-rule="evenodd" d="M92.4841 17.3447H95.3958V12.6227H98.3834C98.8307 12.5495 99.7253 12.738 99.7253 14.0777V17.3447H102.536V13.5836C102.536 12.9613 102.232 11.6673 101.017 11.4697C101.574 11.2134 102.657 10.2507 102.536 8.44981C102.384 6.19865 100.611 4.77108 98.1049 4.68872C96.0997 4.62284 93.5222 4.66127 92.4841 4.68872V17.3447ZM95.4211 10.7284V7.15951H98.2568C98.8138 7.18696 99.9279 7.57131 99.9279 8.88906C99.9279 10.2068 98.8138 10.6644 98.2568 10.7284H95.4211Z" fill="black"/>' +
+        '<path d="M108.185 17.3447H111.12V7.08747H114.464V5.74719C114.464 5.09046 114.004 4.63121 112.371 4.65309C110.737 4.67498 106.688 4.66221 104.867 4.65309V7.08747H108.185V17.3447Z" fill="black"/>' +
+        '<path d="M116.785 17.3447V4.65234H118.402C119.525 4.65234 119.806 5.61886 119.806 6.10211V14.7734C120.478 14.7643 122.192 14.7515 123.676 14.7734C125.16 14.7953 125.478 15.4025 125.451 15.7034V17.3447H116.785Z" fill="black"/>' +
+        '<path d="M129.051 17.3447H131.993V12.3829L136.598 4.65234H133.272L130.765 9.61413L129.051 6.29714C128.846 5.74887 128.125 4.65234 126.877 4.65234H124.37L129.051 12.3829V17.3447Z" fill="black"/>' +
+        '</svg>';
+
+    try {
+        var loader = new THREE.SVGLoader();
+        var data = loader.parse(logoSvg);
+        var logoMat = new THREE.MeshPhysicalMaterial({
+            color: 0xffffff,
+            emissive: 0xffffff,
+            emissiveIntensity: 0.1,
+            metalness: 0.15,
+            roughness: 0.12,
+            clearcoat: 1.0,
+            clearcoatRoughness: 0.05,
+            side: THREE.DoubleSide
+        });
+        var extOpts = {
+            depth: 2.0, bevelEnabled: true,
+            bevelThickness: 0.3, bevelSize: 0.18, bevelSegments: 4
+        };
+
+        data.paths.forEach(function(p) {
+            if (p.subPaths.length > 1) {
+                var outerShape = new THREE.Shape();
+                p.subPaths[0].curves.forEach(function(c) { outerShape.curves.push(c); });
+                outerShape.currentPoint.copy(p.subPaths[0].currentPoint);
+                for (var j = 1; j < p.subPaths.length; j++) {
+                    outerShape.holes.push(p.subPaths[j]);
+                }
+                var geo = new THREE.ExtrudeGeometry(outerShape, extOpts);
+                var mesh = new THREE.Mesh(geo, logoMat);
+                mesh.castShadow = true;
+                logoGroup.add(mesh);
+            } else {
+                var shapes = p.toShapes(true);
+                if (shapes.length === 0) shapes = p.toShapes(false);
+                shapes.forEach(function(s) {
+                    var geo = new THREE.ExtrudeGeometry(s, extOpts);
+                    var mesh = new THREE.Mesh(geo, logoMat);
+                    mesh.castShadow = true;
+                    logoGroup.add(mesh);
+                });
+            }
+        });
+
+        // Subtle edge highlight
+        logoGroup.children.forEach(function(child) {
+            if (child.isMesh) {
+                var edges = new THREE.EdgesGeometry(child.geometry, 30);
+                var line = new THREE.LineSegments(edges, new THREE.LineBasicMaterial({
+                    color: 0xF5EF52, transparent: true, opacity: 0.25
+                }));
+                child.add(line);
+            }
+        });
+
+        var box = new THREE.Box3().setFromObject(logoGroup);
+        var ctr = box.getCenter(new THREE.Vector3());
+        var sz = box.getSize(new THREE.Vector3());
+        logoSc = 22 / Math.max(sz.x, sz.y);
+        logoCx = -ctr.x * logoSc + 9;
+        logoCy = ctr.y * logoSc;
+        logoGroup.scale.set(logoSc, -logoSc, logoSc);
+        logoGroup.position.set(logoCx, logoCy, -2);
+        // Start invisible for fade-in
+        logoGroup.children.forEach(function(c) {
+            if (c.isMesh && c.material) {
+                c.material = c.material.clone();
+                c.material.transparent = true;
+                c.material.opacity = 0;
+            }
+        });
+    } catch(e) {
+        logoGroup.add(new THREE.Mesh(
+            new THREE.TorusKnotGeometry(2, 0.6, 100, 16),
+            new THREE.MeshPhongMaterial({ color: 0xffffff })
+        ));
+        logoGroup.position.set(9, 0, -4);
+    }
+    scene.add(logoGroup);
+
+    // ── SYMBOL PIECES (ambient floating, no fly-in) ──
+    var symColors = [0xF5EF52, 0x5A20B0, 0xF5EF52, 0x5A20B0];
+    var polyData = [
+        [[3.31,0],[-3.32,0],[-3.32,-4.81],[3.31,-3.51]],
+        [[3.31,4.81],[-3.32,3.51],[-3.32,0],[3.31,0]],
+        [[3.31,-3.51],[9.57,-2.28],[9.57,0],[3.31,0]],
+        [[-3.32,3.51],[-9.57,2.28],[-9.57,0],[-3.32,0]]
+    ];
+    var symPositions = [
+        new THREE.Vector3(-16, 6, -6),
+        new THREE.Vector3(18, -4, -8),
+        new THREE.Vector3(-14, -7, -10),
+        new THREE.Vector3(16, 8, -5)
+    ];
+    var symRotations = [
+        { x: 0.3, y: 0.5, z: 0.1 },
+        { x: -0.2, y: -0.4, z: 0.2 },
+        { x: 0.1, y: 0.8, z: -0.15 },
+        { x: -0.3, y: 0.2, z: 0.3 }
+    ];
+
+    var symMeshes = [];
+    for (var i = 0; i < 4; i++) {
+        var shape = new THREE.Shape();
+        var pts = polyData[i];
+        shape.moveTo(pts[0][0], pts[0][1]);
+        for (var j = 1; j < pts.length; j++) shape.lineTo(pts[j][0], pts[j][1]);
+        shape.closePath();
+
+        var geo = new THREE.ExtrudeGeometry(shape, {
+            depth: 1.0, bevelEnabled: true,
+            bevelThickness: 0.12, bevelSize: 0.08, bevelSegments: 3
+        });
+        var mat = new THREE.MeshPhysicalMaterial({
+            color: symColors[i], metalness: 0.3, roughness: 0.15,
+            clearcoat: 1.0, clearcoatRoughness: 0.08, side: THREE.DoubleSide,
+            emissive: symColors[i], emissiveIntensity: 0.2
+        });
+        var mesh = new THREE.Mesh(geo, mat);
+        mesh.position.copy(symPositions[i]);
+        mesh.rotation.set(symRotations[i].x, symRotations[i].y, symRotations[i].z);
+        mesh.castShadow = true;
+        mesh.scale.set(0, 0, 0); // start hidden
+        symMeshes.push(mesh);
+        scene.add(mesh);
+    }
+    // Each piece appears at a different scroll point
+    var symAppearAt = [0.06, 0.18, 0.35, 0.52];
+
+    // ── LIGHTING ──
+    scene.add(new THREE.AmbientLight(0x9050E0, 0.4));
+
+    var key = new THREE.DirectionalLight(0xffffff, 1.0);
+    key.position.set(8, 15, 14);
+    key.castShadow = true;
+    key.shadow.mapSize.width = 1024;
+    key.shadow.mapSize.height = 1024;
+    key.shadow.camera.near = 1;
+    key.shadow.camera.far = 60;
+    key.shadow.camera.left = -20;
+    key.shadow.camera.right = 20;
+    key.shadow.camera.top = 20;
+    key.shadow.camera.bottom = -20;
+    key.shadow.bias = -0.002;
+    scene.add(key);
+
+    var rim = new THREE.DirectionalLight(0xA855F7, 0.5);
+    rim.position.set(-10, -5, -8);
+    scene.add(rim);
+
+    var yellowAccent = new THREE.PointLight(0xF5EF52, 0.6, 50);
+    yellowAccent.position.set(15, 8, 5);
+    scene.add(yellowAccent);
+
+    var purpleAccent = new THREE.PointLight(0x5A20B0, 0.4, 40);
+    purpleAccent.position.set(-12, -8, 3);
+    scene.add(purpleAccent);
+
+    // Logo spotlight
+    var logoSpot = new THREE.SpotLight(0xffffff, 0.8, 40, Math.PI * 0.25, 0.5, 1);
+    logoSpot.position.set(9, 5, 12);
+    logoSpot.target.position.set(9, 0, -2);
+    scene.add(logoSpot);
+    scene.add(logoSpot.target);
+
+    // ── PARALLAX TEXT ──
+    var parallaxWraps = document.querySelectorAll('.parallax-wrap');
+
+    // ── ANIMATION ──
+    var logoRevealed = false;
+    (function animate() {
+        requestAnimationFrame(animate);
+        var t = (performance.now() - t0) * 0.001;
+
+        // Smooth mouse tracking
+        mx += (tmx - mx) * 0.04;
+        my += (tmy - my) * 0.04;
+
+        // ── LOGO FADE IN (first 2.5 seconds) ──
+        var introT = clamp(t / 2.5, 0, 1);
+        var introE = 1 - Math.pow(1 - introT, 3); // ease-out cubic
+
+        if (!logoRevealed) {
+            logoGroup.children.forEach(function(c) {
+                if (c.isMesh && c.material) {
+                    c.material.opacity = introE;
+                    if (introE >= 0.99) {
+                        c.material.transparent = false;
+                        c.material.opacity = 1;
+                    }
+                }
+            });
+            if (introE >= 0.99) logoRevealed = true;
+        }
+
+        // Logo: gentle float and tilt, follows scroll upward
+        logoGroup.rotation.y = Math.sin(t * 0.15) * 0.08 + mx * 0.06;
+        logoGroup.rotation.x = Math.cos(t * 0.12) * 0.04 + my * 0.04;
+        logoGroup.position.y = logoCy + Math.sin(t * 0.2) * 0.4 - scrollPx * 0.02;
+
+        // ── TECH GRID ──
+        // Slow drift + mouse parallax on grids
+        gridGroup.rotation.y = Math.sin(t * 0.02) * 0.03 + mx * 0.02;
+        gridGroup.position.y = -6 + Math.sin(t * 0.08) * 0.5 + scrollN * 4;
+
+        gridGroup2.rotation.y = Math.sin(t * 0.015 + 1) * 0.02 - mx * 0.015;
+        gridGroup2.position.y = 8 + Math.cos(t * 0.06) * 0.3 + scrollN * 2;
+
+        // Node glow pulse
+        nodeMat.opacity = 0.4 + Math.sin(t * 0.8) * 0.15;
+
+        // ── SYMBOL PIECES: hidden → scale in on scroll, then float ──
+        for (var si = 0; si < 4; si++) {
+            var sm = symMeshes[si];
+            var sp = symPositions[si];
+            var sr = symRotations[si];
+
+            // Scale in over 10% scroll range after trigger
+            var appear = clamp((scrollN - symAppearAt[si]) / 0.10, 0, 1);
+            var easeAppear = 1 - Math.pow(1 - appear, 3); // ease-out cubic
+            sm.scale.set(easeAppear, easeAppear, easeAppear);
+
+            // Only animate position/rotation once visible
+            if (easeAppear > 0.01) {
+                sm.position.x = sp.x + Math.sin(t * 0.18 + si * 1.5) * 0.8 + mx * (1 + si * 0.3);
+                sm.position.y = sp.y + Math.cos(t * 0.14 + si * 2.0) * 0.6 + my * (0.5 + si * 0.2);
+                sm.position.z = sp.z + Math.sin(t * 0.1 + si) * 0.4;
+
+                sm.rotation.x = sr.x + t * 0.04 * (si % 2 === 0 ? 1 : -1);
+                sm.rotation.y = sr.y + t * 0.06 * (si % 2 === 0 ? -1 : 1);
+            }
+        }
+
+        // ── CAMERA ──
+        camera.position.x = mx * 1.5;
+        camera.position.y = my * 1.0 - scrollN * 3;
+        camera.position.z = 30;
+        camera.lookAt(0, -scrollN * 2, -5);
+
+        composer.render();
+    })();
+
+    addEventListener('resize', function() {
+        camera.aspect = innerWidth / innerHeight;
+        camera.updateProjectionMatrix();
+        renderer.setSize(innerWidth, innerHeight);
+        composer.setSize(innerWidth, innerHeight);
+    });
+
+    function updateParallax() {
+        parallaxWraps.forEach(function(el) {
+            var rect = el.getBoundingClientRect();
+            var offset = (rect.top + rect.height / 2 - innerHeight / 2) * -0.06;
+            el.style.transform = 'translate3d(0,' + offset + 'px,0)';
+        });
+        requestAnimationFrame(updateParallax);
+    }
+    updateParallax();
+
+    var obs = new IntersectionObserver(function(entries) {
+        entries.forEach(function(e, i) {
+            if (e.isIntersecting) {
+                setTimeout(function() { e.target.classList.add('vis'); }, i * 60);
+                obs.unobserve(e.target);
+            }
+        });
+    }, { threshold: 0.1 });
+    document.querySelectorAll('.reveal').forEach(function(el) { obs.observe(el); });
+})();
+</script>
+
+</body>
+</html>
